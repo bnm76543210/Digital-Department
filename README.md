@@ -68,6 +68,64 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
+## Развертывание с нуля для видео
+
+Для демонстрации полного сценария на чистой машине используйте такой порядок.
+
+1. Склонировать репозиторий и перейти в папку проекта:
+
+```powershell
+git clone https://github.com/bnm76543210/Digital-Department.git
+cd Digital-Department
+```
+
+2. Создать виртуальное окружение и установить зависимости:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+3. Настроить ClearML без сохранения ключей в репозитории. Самый удобный вариант для видео:
+
+```powershell
+clearml-init
+```
+
+В открывшемся запросе вставьте блок `api { ... }` из личного кабинета ClearML. Ключи лучше не показывать крупным планом при записи экрана.
+
+Альтернативный вариант через переменные окружения текущего терминала:
+
+```powershell
+$env:CLEARML_API_ACCESS_KEY="ВАШ_ACCESS_KEY"
+$env:CLEARML_API_SECRET_KEY="ВАШ_SECRET_KEY"
+$env:CLEARML_API_HOST="https://api.clear.ml"
+$env:CLEARML_WEB_HOST="https://app.clear.ml"
+$env:CLEARML_FILES_HOST="https://files.clear.ml"
+```
+
+4. Запустить приложение:
+
+```powershell
+streamlit run app.py
+```
+
+5. В Streamlit открыть `Модель и прогноз`, нажать `Обучить и сравнить`, затем открыть `MLOps ClearML` и нажать `Отправить метрики и модель в ClearML`.
+
+6. При необходимости создать версию датасета и проверить CLI-сценарии:
+
+```powershell
+python scripts\clearml_dataset.py
+python scripts\clearml_train.py
+```
+
+7. Для демонстрации Serving запустить Docker Desktop, зарегистрировать модель в ClearML Serving, поднять inference-контейнер и проверить REST-запрос:
+
+```powershell
+python scripts\serving_request.py --endpoint http://127.0.0.1:8080/serve/predictive_maintenance
+```
+
 ## Запуск приложения
 
 ```bash
